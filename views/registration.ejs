@@ -1,0 +1,123 @@
+<%- include('partials/header', { title: 'Registration', page: 'registration', student }) %>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-text">
+      <div class="banner-date"><%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+      <div class="banner-title">Course Registration</div>
+      <div class="banner-sub">Register for courses and manage your enrollment</div>
+    </div>
+    <div class="banner-deco">
+      <img src="/images/icons/logo.jpg" alt="CHCC" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; opacity: 0.9;">
+    </div>
+  </div>
+
+  <!-- Registration Content -->
+  <div class="content-row">
+    <div class="left-col">
+      <div class="section-title">Student Information</div>
+      <div class="notice-item">
+        <div class="notice-item-title"><%= student.name %></div>
+        <div class="notice-item-body">Student Number: <%= student.studentNumber %></div>
+        <div class="notice-item-body">Course: <%= student.course %></div>
+        <div class="notice-item-body">Year Level: <%= student.year %>th Year</div>
+        <div class="notice-item-body">Address: <%= student.address %></div>
+        <div class="notice-item-body">Contact: <%= student.contactNumber %></div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Current Registration Status</div>
+        <div class="notice-item">
+          <div class="notice-item-title"><%= student.semester %> - AY <%= student.academicYear %></div>
+          <div class="notice-item-body">Registration Period: Nov 21, 2025 - Jan 25, 2026</div>
+          <div class="notice-item-body">Status: <strong style="color: #34d399;">Open</strong></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Registered Subjects</div>
+        <div class="notice-item">
+          <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <thead>
+              <tr style="background: #e5e7eb;">
+                <th style="padding: 8px; text-align: left; border: 1px solid #d1d5db;">Code</th>
+                <th style="padding: 8px; text-align: left; border: 1px solid #d1d5db;">Subject Description</th>
+                <th style="padding: 8px; text-align: center; border: 1px solid #d1d5db;">Lec</th>
+                <th style="padding: 8px; text-align: center; border: 1px solid #d1d5db;">Lab</th>
+                <th style="padding: 8px; text-align: center; border: 1px solid #d1d5db;">Section</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% (student.subjects || []).forEach(function(subject) { %>
+              <tr>
+                <td style="padding: 8px; border: 1px solid #d1d5db;"><%= subject.code %></td>
+                <td style="padding: 8px; border: 1px solid #d1d5db;"><%= subject.name %></td>
+                <td style="padding: 8px; text-align: center; border: 1px solid #d1d5db;"><%= subject.lecUnits %></td>
+                <td style="padding: 8px; text-align: center; border: 1px solid #d1d5db;"><%= subject.labUnits %></td>
+                <td style="padding: 8px; text-align: center; border: 1px solid #d1d5db;"><%= subject.section %></td>
+              </tr>
+              <% }); %>
+              <tr style="font-weight: bold; background: #f3f4f6;">
+                <td colspan="2" style="padding: 8px; text-align: right; border: 1px solid #d1d5db;">Total Units:</td>
+                <td style="padding: 8px; text-align: center; border: 1px solid #d1d5db;"><%= student.totalUnits %></td>
+                <td style="padding: 8px; text-align: center; border: 1px solid #d1d5db;">0</td>
+                <td style="padding: 8px; border: 1px solid #d1d5db;"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="section-title">Financial Assessment</div>
+      <div class="notice-item">
+        <div class="notice-item-title">Fees Breakdown</div>
+        <div class="notice-item-body">Tuition Fee: ₱<%= student.finance.tuitionFee.toFixed(2) %></div>
+        <div class="notice-item-body">Laboratory Fee: ₱<%= student.finance.laboratoryFee.toFixed(2) %></div>
+        <div class="notice-item-body">Registration Fee: ₱<%= student.finance.registrationFee.toFixed(2) %></div>
+        <div class="notice-item-body">Internet Fee: ₱<%= student.finance.internetFee.toFixed(2) %></div>
+        <div class="notice-item-body">Library Fee: ₱<%= student.finance.libraryFee.toFixed(2) %></div>
+        <div class="notice-item-body">Medical and Dental: ₱<%= student.finance.medicalAndDental.toFixed(2) %></div>
+        <div class="notice-item-body">Student Activities: ₱<%= student.finance.studentActivities.toFixed(2) %></div>
+        <div class="notice-item-body">Other Fees: ₱<%= student.finance.otherFees.toFixed(2) %></div>
+      </div>
+      <div class="notice-item" style="margin-top: 16px; background: #fef3c7;">
+        <div class="notice-item-title">Total Assessment: ₱<%= student.finance.totalAssessment.toFixed(2) %></div>
+        <div class="notice-item-body">Total Payments: ₱<%= student.finance.totalPaid.toFixed(2) %></div>
+        <div class="notice-item-title" style="color: #dc2626;">Outstanding Balance: ₱<%= student.finance.outstandingBalance.toFixed(2) %></div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Administrative Details</div>
+        <div class="notice-item">
+          <div class="notice-item-title">Date Assessed: <%= student.admin.dateAssessed %></div>
+          <div class="notice-item-body">Assessed By: <%= student.admin.assessedBy %></div>
+          <div class="notice-item-body">Cashier: <%= student.admin.cashier %></div>
+          <div class="notice-item-body">Registrar: <%= student.admin.registrar %></div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Registration Information</div>
+        <div class="notice-item">
+          <div class="notice-item-title">Eligibility</div>
+          <div class="notice-item-body">You must clear all previous dues to register for new courses</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-item-title">Maximum Credits</div>
+          <div class="notice-item-body">You can register for up to 21 credits per semester</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-item-title">Add/Drop Period</div>
+          <div class="notice-item-body">First two weeks of the semester for course changes</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-item-title">Contact</div>
+          <div class="notice-item-body">Email: registrar@chcc.edu | Phone: +63-45-123-4567</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('partials/footer') %>

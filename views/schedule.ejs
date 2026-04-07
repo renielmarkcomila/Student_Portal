@@ -1,0 +1,88 @@
+<%- include('partials/header', { title: 'Schedule', page: 'schedule', student }) %>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-text">
+      <div class="banner-date"><%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+      <div class="banner-title">Class Schedule</div>
+      <div class="banner-sub">View your weekly class timetable</div>
+    </div>
+    <div class="banner-deco">
+      <img src="/images/icons/logo.jpg" alt="CHCC" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; opacity: 0.9;">
+    </div>
+  </div>
+
+  <!-- Schedule Content -->
+  <div class="content-row">
+    <div class="left-col">
+      <div class="section-title">Weekly Schedule - <%= student.semester %> AY <%= student.academicYear %></div>
+      <div class="notice-item">
+        <div class="notice-item-title">Monday</div>
+        <div class="notice-item-body">8:00 AM - 9:30 AM | Event Driven Programming (CSA106) | Room 301</div>
+        <div class="notice-item-body">10:00 AM - 11:30 AM | Software Engineering 2 (CSP111) | Room 302</div>
+        <div class="notice-item-body">1:00 PM - 2:30 PM | Operating System (CSP112) | Lab 2</div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Tuesday</div>
+        <div class="notice-item-body">8:00 AM - 9:30 AM | Elective 2 (CSE102) | Room 204</div>
+        <div class="notice-item-body">10:00 AM - 11:30 AM | Human Computer Interaction (CSP113) | Room 105</div>
+        <div class="notice-item-body">2:00 PM - 3:30 PM | CS Thesis Writing 1 (CSP115) | Room 401</div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Wednesday</div>
+        <div class="notice-item-body">8:00 AM - 9:30 AM | Event Driven Programming (CSA106) | Room 301</div>
+        <div class="notice-item-body">10:00 AM - 11:30 AM | Software Engineering 2 (CSP111) | Room 302</div>
+        <div class="notice-item-body">1:00 PM - 2:30 PM | Operating System (CSP112) | Lab 2</div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Thursday</div>
+        <div class="notice-item-body">8:00 AM - 9:30 AM | Elective 2 (CSE102) | Room 204</div>
+        <div class="notice-item-body">10:00 AM - 11:30 AM | Human Computer Interaction (CSP113) | Room 105</div>
+        <div class="notice-item-body">2:00 PM - 3:30 PM | CS Thesis Writing 1 (CSP115) | Room 401</div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Friday</div>
+        <div class="notice-item-body">9:00 AM - 10:30 AM | Quantitative Methods (MTE101) | Room 203</div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="section-title">Schedule Information</div>
+      <div class="notice-item">
+        <div class="notice-item-title">Semester</div>
+        <div class="notice-item-body"><%= student.semester %> <%= student.academicYear %></div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Total Classes</div>
+        <div class="notice-item-body">13 classes per week</div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Class Duration</div>
+        <div class="notice-item-body">1 hour 30 minutes per session</div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Enrolled Subjects</div>
+        <% (student.subjects || []).forEach(function(subject) { %>
+        <div class="notice-item">
+          <div class="notice-item-title"><%= subject.code %></div>
+          <div class="notice-item-body"><%= subject.name %></div>
+        </div>
+        <% }); %>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Important Dates</div>
+        <div class="notice-item">
+          <div class="notice-item-title">Midterm Exams</div>
+          <div class="notice-item-body">March 16-21, 2026</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-item-title">Final Exams</div>
+          <div class="notice-item-body">May 25 - June 3, 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('partials/footer') %>

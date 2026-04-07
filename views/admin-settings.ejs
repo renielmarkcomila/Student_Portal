@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Settings | CHCC Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; background: #f8fafc; color: #0f172a; height: 100vh; display: flex; overflow: hidden; }
+    /* Sidebar */
+    .sidebar { width: 250px; background: #1e293b; color: #fff; display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
+    .sb-logo-box { display: flex; gap: 12px; align-items: center; margin-bottom: 40px; padding: 0 10px; }
+    .sb-logo { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+    .sb-title { font-family: 'Outfit'; font-size: 14px; font-weight: 800; line-height: 1.2; letter-spacing: 0.5px; }
+    .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; color: #94a3b8; text-decoration: none; font-weight: 700; font-size: 14px; margin-bottom: 6px; transition: 0.2s; }
+    .nav-link:hover { background: #334155; color: #fff; }
+    .nav-link.active { background: #38bdf8; color: #0f172a; }
+    .sb-footer { margin-top: auto; border-top: 1px solid #334155; padding-top: 24px; }
+    .logout-btn { display: block; width: 100%; text-align: center; padding: 10px; background: #ef4444; color: #fff; border-radius: 10px; text-decoration: none; font-weight: 700; font-size: 14px; transition: 0.2s; }
+    .logout-btn:hover { background: #dc2626; }
+    /* Main */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .topbar { background: #fff; padding: 24px 40px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .page-title { font-family: 'Outfit'; font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
+    .page-sub { color: #64748b; font-size: 14px; font-weight: 600; }
+    .content-area { display: flex; justify-content: center; padding: 40px; }
+    .settings-card { width: 100%; max-width: 600px; background: #fff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; padding: 32px; }
+    .st-title { font-family: 'Outfit'; font-size: 20px; font-weight: 800; margin-bottom: 24px; color: #0f172a; }
+    .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f5f9; }
+    .setting-item:last-child { border-bottom: none; }
+    .si-left { display: flex; flex-direction: column; gap: 4px; }
+    .si-name { font-weight: 800; color: #1e293b; font-size: 15px; }
+    .si-desc { color: #64748b; font-size: 13px; font-weight: 600; }
+    .toggle { background: #cbd5e1; width: 44px; height: 24px; border-radius: 12px; position: relative; cursor: not-allowed; }
+    .toggle::after { content: ''; position: absolute; left: 2px; top: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; }
+    .toggle.on { background: #10b981; }
+    .toggle.on::after { right: 2px; left: auto; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="sb-logo-box">
+      <img src="/images/icons/logo.jpg" alt="CHCC" class="sb-logo">
+      <div class="sb-title">CHCC<br><span style="color:#38bdf8; font-size:11px;">ADMINISTRATION</span></div>
+    </div>
+    <nav>
+      <a href="/admin/students" class="nav-link">🎓 Student Roster</a>
+      <a href="/admin/campus" class="nav-link">🏛️ Campus Records</a>
+      <a href="/admin/settings" class="nav-link active">⚙️ System Configuration</a>
+    </nav>
+    <div class="sb-footer">
+      <div style="font-size:12px; color:#94a3b8; font-weight:700; margin-bottom:12px; text-align:center;">Logged in as Admin</div>
+      <a href="/logout" class="logout-btn">Secure Logout</a>
+    </div>
+  </aside>
+  <main class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="page-title">System Configuration</div>
+        <div class="page-sub">Application backend rules and global preferences.</div>
+      </div>
+    </div>
+    <div class="content-area">
+      <div class="settings-card">
+        <div class="st-title">Platform Preferences</div>
+        
+        <div class="setting-item">
+          <div class="si-left">
+            <div class="si-name">Allow Public Enrollment</div>
+            <div class="si-desc">Accept new queries from the login screen endpoint.</div>
+          </div>
+          <div class="toggle on"></div>
+        </div>
+        
+        <div class="setting-item">
+          <div class="si-left">
+            <div class="si-name">Global Grade Visibility</div>
+            <div class="si-desc">Allow students to view preliminary grades.</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+        
+        <div class="setting-item">
+          <div class="si-left">
+            <div class="si-name">Maintenance Server Lock</div>
+            <div class="si-desc">Lockdown all accounts for system administration.</div>
+          </div>
+          <div class="toggle"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> | Student Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="portal">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo-wrap">
+        <div class="logo-box">
+          <img src="/images/icons/logo.jpg" alt="CHCC" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover;">
+        </div>
+      </div>
+
+      <nav>
+        <a href="/dashboard" class="nav-item <%= page === 'dashboard' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm8 0a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1V4zM3 12a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm8 0a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-3z"/></svg>
+          Dashboard
+        </a>
+        <a href="/payment" class="nav-item <%= page === 'payment' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 00-2 2v4a2 2 0 002 2h8a2 2 0 002-2v-4a2 2 0 00-2-2H6z"/></svg>
+          Payment Info
+        </a>
+        <a href="/registration" class="nav-item <%= page === 'registration' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+          Registration
+        </a>
+        <a href="/courses" class="nav-item <%= page === 'courses' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.396 0 2.695.397 3.8 1.075A7.968 7.968 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"/></svg>
+          Courses
+        </a>
+        <a href="/drop" class="nav-item <%= page === 'drop' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          Drop Semester
+        </a>
+        <a href="/result" class="nav-item <%= page === 'result' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+          Result
+        </a>
+        <a href="/notice" class="nav-item <%= page === 'notice' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/></svg>
+          Notice
+        </a>
+        <a href="/schedule" class="nav-item <%= page === 'schedule' ? 'active' : '' %>">
+          <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+          Schedule
+        </a>
+      </nav>
+
+      <div class="nav-spacer"></div>
+      <a href="/logout" class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/></svg>
+        Logout
+      </a>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="profile">
+          <div class="avatar"><%= (student.name || 'S').split(' ').map(n => n[0]).join('') %></div>
+          <div>
+            <div class="profile-name"><%= student.name %></div>
+            <div class="profile-sub">
+              <%= student.year %><% 
+                if (student.year == 1) { %>st<% } 
+                else if (student.year == 2) { %>nd<% } 
+                else if (student.year == 3) { %>rd<% } 
+                else { %>th<% } 
+              %> year
+            </div>
+          </div>
+          <div class="bell" onclick="toggleNotifs(event)">
+            <svg width="16" height="16" viewBox="0 0 20 20" fill="#333"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/></svg>
+            <% if (student.notices && student.notices.length > 0) { %>
+            <div class="bell-dot"></div>
+            <% } %>
+            
+            <div id="notifDropdown" style="display:none; position:fixed; top:60px; right:24px; width:300px; background:#fff; box-shadow:0 12px 40px rgba(0,0,0,0.15); border-radius:16px; z-index:9999; border:1px solid #e2e8f0; cursor:default;" onclick="event.stopPropagation()">
+               <div style="padding:12px 16px; border-bottom:1px solid #e2e8f0; font-weight:800; color:#0369a1; font-size:14px; text-align:left;">Notifications</div>
+               <div style="max-height:300px; overflow-y:auto; padding:8px 0;">
+                 <% if (student.notices && student.notices.length > 0) { %>
+                   <% student.notices.forEach(function(n) { %>
+                     <div style="padding:10px 16px; text-align:left; border-bottom:1px solid #f1f5f9;">
+                       <div style="font-size:13px; font-weight:700; color:#0f172a;"><%= n.title %></div>
+                       <div style="font-size:12px; color:#64748b; margin-top:4px; line-height:1.4;"><%= n.body %></div>
+                     </div>
+                   <% }) %>
+                 <% } else { %>
+                   <div style="padding:16px; text-align:center; color:#94a3b8; font-size:13px;">No new notifications</div>
+                 <% } %>
+               </div>
+            </div>
+          </div>
+          
+          <script>
+            function toggleNotifs(e) {
+              e.stopPropagation();
+              const drop = document.getElementById('notifDropdown');
+              drop.style.display = drop.style.display === 'none' ? 'block' : 'none';
+            }
+            document.addEventListener('click', function() {
+              const drop = document.getElementById('notifDropdown');
+              if (drop && drop.style.display === 'block') {
+                drop.style.display = 'none';
+              }
+            });
+          </script>
+        </div>
+      </div>

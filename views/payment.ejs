@@ -1,0 +1,93 @@
+<%- include('partials/header', { title: 'Payment Info', page: 'payment', student }) %>
+
+  <!-- Banner -->
+  <div class="banner">
+    <div class="banner-text">
+      <div class="banner-date"><%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+      <div class="banner-title">Payment Information</div>
+      <div class="banner-sub">View and manage your payment details</div>
+    </div>
+    <div class="banner-deco">
+      <img src="/images/icons/logo.jpg" alt="CHCC" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; opacity: 0.9;">
+    </div>
+  </div>
+
+  <!-- Payment Summary -->
+  <div class="content-row">
+    <div class="left-col">
+      <div class="section-title">Financial Assessment - <%= student.semester %> AY <%= student.academicYear %></div>
+      
+      <div class="notice-item">
+        <div class="notice-item-title">Fee Breakdown</div>
+        <div class="notice-item-body">Tuition Fee: ₱<%= student.finance.tuitionFee.toFixed(2) %></div>
+        <div class="notice-item-body">Laboratory Fee: ₱<%= student.finance.laboratoryFee.toFixed(2) %></div>
+        <div class="notice-item-body">Registration Fee: ₱<%= student.finance.registrationFee.toFixed(2) %></div>
+        <div class="notice-item-body">Internet Fee: ₱<%= student.finance.internetFee.toFixed(2) %></div>
+        <div class="notice-item-body">Library Fee: ₱<%= student.finance.libraryFee.toFixed(2) %></div>
+        <div class="notice-item-body">Medical and Dental: ₱<%= student.finance.medicalAndDental.toFixed(2) %></div>
+        <div class="notice-item-body">Student Activities: ₱<%= student.finance.studentActivities.toFixed(2) %></div>
+        <div class="notice-item-body">Other Fees: ₱<%= student.finance.otherFees.toFixed(2) %></div>
+      </div>
+
+      <div class="finance-cards" style="margin-top: 24px;">
+        <div class="finance-card">
+          <div class="finance-amount">₱<%= student.finance.totalAssessment.toFixed(2) %></div>
+          <div class="finance-label">Total Assessment</div>
+        </div>
+        <div class="finance-card active">
+          <div class="finance-amount">₱<%= student.finance.totalPaid.toFixed(2) %></div>
+          <div class="finance-label">Total Paid</div>
+        </div>
+        <div class="finance-card">
+          <div class="finance-amount" style="color: #dc2626;">₱<%= student.finance.outstandingBalance.toFixed(2) %></div>
+          <div class="finance-label">Outstanding Balance</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Payment History</div>
+        <div class="notice-item">
+          <div class="notice-item-title">Initial Payment - <%= student.semester %> <%= student.academicYear %></div>
+          <div class="notice-item-body">Amount: ₱<%= student.finance.totalPaid.toFixed(2) %> | Status: Paid | Date: Nov 21, 2025</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-item-title">Outstanding Balance</div>
+          <div class="notice-item-body">Amount: ₱<%= student.finance.outstandingBalance.toFixed(2) %> | Status: Pending | Due: Before enrollment</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div class="section-title">Assessed By</div>
+      <div class="notice-item">
+        <div class="notice-item-title">Date Assessed</div>
+        <div class="notice-item-body"><%= student.admin.dateAssessed %></div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Assessor</div>
+        <div class="notice-item-body"><%= student.admin.assessedBy %></div>
+      </div>
+      <div class="notice-item">
+        <div class="notice-item-title">Cashier</div>
+        <div class="notice-item-body"><%= student.admin.cashier %></div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <div class="section-title">Payment Methods</div>
+        <div class="notice-item">
+          <div class="notice-item-title">Bank Transfer</div>
+          <div class="notice-item-body">Account: 1234-5678-9012 | Bank: LandBank</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-item-title">Online Payment</div>
+          <div class="notice-item-body">Pay through the student portal using GCash/PayMaya</div>
+        </div>
+        <div class="notice-item">
+          <div class="notice-item-title">Cash Payment</div>
+          <div class="notice-item-body">Visit the finance office during business hours</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('partials/footer') %>

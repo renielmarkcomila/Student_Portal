@@ -1,0 +1,55 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "studentNumber": "58062023",
+      "name": "COMILA, Reniel Mark Carreon",
+      "email": "makmak@chcc.edu.ph",
+      "password": "makmak11",
+      "course": "Bachelor of Science in Computer Science",
+      "courseCode": "BSCS",
+      "year": 3,
+      "dateOfBirth": "2005-07-11",
+      "address": "Caluluan, Concepcion, Tarlac",
+      "contactNumber": "0964405964",
+      "semester": "2nd Semester",
+      "academicYear": "2025-2026",
+      "finance": {
+        "tuitionFee": 7896,
+        "laboratoryFee": 4000,
+        "registrationFee": 2000,
+        "internetFee": 500,
+        "libraryFee": 325,
+        "medicalAndDental": 450,
+        "studentActivities": 500,
+        "otherFees": 3123.85,
+        "totalAssessment": 18794.85,
+        "totalPaid": 1500,
+        "outstandingBalance": 17294.85
+      },
+      "subjects": [
+        { "code": "CSA106", "name": "Event Driven Programming", "lecUnits": 3, "labUnits": 0, "section": "3 BSCS-B" },
+        { "code": "CSE102", "name": "Elective 2", "lecUnits": 3, "labUnits": 0, "section": "3 BSCS-B" },
+        { "code": "CSP111", "name": "Software Engineering 2", "lecUnits": 3, "labUnits": 0, "section": "3 BSCS-B" },
+        { "code": "CSP112", "name": "Operating System", "lecUnits": 3, "labUnits": 0, "section": "3 BSCS-B" },
+        { "code": "CSP113", "name": "Human Computer Interaction", "lecUnits": 3, "labUnits": 0, "section": "3 BSCS-B" },
+        { "code": "CSP115", "name": "CS Thesis Writing 1", "lecUnits": 3, "labUnits": 0, "section": "3 BSCS-B" },
+        { "code": "MTE101", "name": "Quantitative Methods (Math Elective)", "lecUnits": 3, "labUnits": 0, "section": "3 BSCS-B" }
+      ],
+      "totalUnits": 21,
+      "instructors": [
+        { "name": "Sir Simora", "bg": "#fca5a5", "color": "#7f1d1d" }
+      ],
+      "notices": [
+        { "id": 1, "title": "Prelim payment due", "body": "Please settle your prelim fees before the deadline to avoid penalty." },
+        { "id": 2, "title": "Exam schedule", "body": "Midterm exams will be held from Oct 10–14. Check your schedule online." }
+      ],
+      "admin": {
+        "dateAssessed": "2025-11-21",
+        "assessedBy": "SABAT, NATHANIEL",
+        "cashier": "LUISA MARIE N. MAGTOTO",
+        "registrar": "JULIUS DADOR"
+      }
+    }
+  ]
+}

@@ -138,12 +138,29 @@ const server = http.createServer(async (req, res) => {
     if (method === 'GET' && url === '/payment') return renderView(res, 'payment.ejs', { student });
     if (method === 'GET' && url === '/registration') return renderView(res, 'registration.ejs', { student });
     if (method === 'GET' && url === '/courses') return renderView(res, 'courses.ejs', { student });
-    const DROP_DEADLINE = new Date('2026-03-15'); // Example fixed deadline in the past
+    
+    // Profile page
+    if (method === 'GET' && url === '/profile') {
+      return renderView(res, 'profile.ejs', { student });
+    }
+
+    const DROP_DEADLINE = new Date('2026-03-15');
     const dropDeadlinePassed = new Date() > DROP_DEADLINE;
 
     if (method === 'GET' && url === '/drop') return renderView(res, 'drop.ejs', { student, dropDeadlinePassed });
-    if (method === 'GET' && url === '/result') return renderView(res, 'result.ejs', { student });
-    if (method === 'GET' && url === '/notice') return renderView(res, 'notice.ejs', { student });
+
+    // Grades/Result page — fetch real grades from DB
+    if (method === 'GET' && url === '/result') {
+      const gradesRows = await db.all('SELECT * FROM grades WHERE student_id = ?', [student.id]);
+      return renderView(res, 'result.ejs', { student, grades: gradesRows });
+    }
+
+    // Notices/Announcements page — fetch from announcements table
+    if (method === 'GET' && url === '/notice') {
+      const announcements = await db.all('SELECT * FROM announcements ORDER BY created_at DESC');
+      return renderView(res, 'notice.ejs', { student, announcements });
+    }
+
     if (method === 'GET' && url === '/schedule') return renderView(res, 'schedule.ejs', { student });
     
     if (method === 'POST' && url === '/drop') {
@@ -198,15 +215,86 @@ const server = http.createServer(async (req, res) => {
     if (method === 'GET' && url === '/admin/settings') {
       return renderView(res, 'admin-settings.ejs', { admin: user });
     }
-    
-    if (method === 'POST' && url === '/admin/purge') {
+
+    // Announcements management
+    if (method === 'GET' && url === '/admin/announcements') {
+      const announcements = await db.all('SELECT * FROM announcements ORDER BY created_at DESC');
+      return renderView(res, 'admin-announcements.ejs', { admin: user, announcements });
+    }
+
+    if (method === 'POST' && url === '/admin/announcements/add') {
       parseFormData(req, async (formData) => {
-        await db.run('DELETE FROM students WHERE id = ? AND role = "student"', [formData.studentId]);
+        const { title, body, category } = formData;
+        await db.run(
+          `INSERT INTO announcements (title, body, category) VALUES (?, ?, ?)`,
+          [title.trim(), body.trim(), category || 'General']
+        );
+        res.writeHead(302, { 'Location': '/admin/announcements' });
+        res.end();
+      });
+      return;
+    }
+
+    if (method === 'POST' && url === '/admin/announcements/delete') {
+      parseFormData(req, async (formData) => {
+        await db.run('DELETE FROM announcements WHERE id = ?', [formData.announcementId]);
+        res.writeHead(302, { 'Location': '/admin/announcements' });
+        res.end();
+      });
+      return;
+    }
+
+    // Grade entry by admin
+    if (method === 'POST' && url === '/admin/grades') {
+      parseFormData(req, async (formData) => {
+        const { studentId, subjectCode, subjectName, midterm, finals, finalGrade } = formData;
+        await db.run(
+          `INSERT INTO grades (student_id, subject_code, subject_name, midterm, finals, final_grade)
+           VALUES (?, ?, ?, ?, ?, ?)
+           ON CONFLICT(student_id, subject_code) DO UPDATE SET
+             midterm = excluded.midterm,
+             finals = excluded.finals,
+             final_grade = excluded.final_grade`,
+          [studentId, subjectCode, subjectName, midterm || '', finals || '', finalGrade || '']
+        );
         res.writeHead(302, { 'Location': '/admin/students' });
         res.end();
       });
       return;
     }
+
+    // Edit student info
+    if (method === 'POST' && url === '/admin/edit') {
+      parseFormData(req, async (formData) => {
+        const { studentId, name, course, year, email } = formData;
+        const studentRow = await db.get('SELECT * FROM students WHERE id = ?', [studentId]);
+        if (studentRow) {
+          let studentData = JSON.parse(studentRow.data);
+          studentData.name = name;
+          studentData.course = course;
+          studentData.year = parseInt(year) || 1;
+          studentData.email = email;
+          await db.run(
+            'UPDATE students SET name = ?, email = ?, data = ? WHERE id = ?',
+            [name, email, JSON.stringify(studentData), studentId]
+          );
+        }
+        res.writeHead(302, { 'Location': '/admin/students' });
+        res.end();
+      });
+      return;
+    }
+    
+    if (method === 'POST' && url === '/admin/purge') {
+      parseFormData(req, async (formData) => {
+        await db.run('DELETE FROM students WHERE id = ? AND role = "student"', [formData.studentId]);
+        await db.run('DELETE FROM grades WHERE student_id = ?', [formData.studentId]);
+        res.writeHead(302, { 'Location': '/admin/students' });
+        res.end();
+      });
+      return;
+    }
+
     if (method === 'POST' && url === '/admin/add') {
       parseFormData(req, async (formData) => {
         const { name, email, password, studentNumber, course } = formData;

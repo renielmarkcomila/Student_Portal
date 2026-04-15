@@ -1,14 +1,17 @@
-<%- include('partials/header', { title: 'Drop Semester', page: 'drop', student }) %>
+<%- include('partials/header', { title: 'Drop Semester' , page: 'drop' , student }) %>
 
   <!-- Banner -->
   <div class="banner">
     <div class="banner-text">
-      <div class="banner-date"><%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+      <div class="banner-date">
+        <%= new Date().toLocaleDateString('en-US', { year: 'numeric' , month: 'long' , day: 'numeric' }) %>
+      </div>
       <div class="banner-title">Drop Semester</div>
       <div class="banner-sub">Submit a request to drop subjects or an entire semester</div>
     </div>
     <div class="banner-deco">
-      <img src="/images/icons/logo.jpg" alt="CHCC" style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; opacity: 0.9;">
+      <img src="/images/icons/logo.jpg" alt="CHCC"
+        style="width: 110px; height: 110px; border-radius: 50%; object-fit: cover; opacity: 0.9;">
     </div>
   </div>
 
@@ -18,59 +21,78 @@
       <div class="section-title">Drop Course Request</div>
       <div class="notice-item">
         <div class="notice-item-title">Important Notice</div>
-        <div class="notice-item-body">Dropping courses may affect your graduation timeline and financial aid eligibility. Please consult with your academic advisor before proceeding.</div>
+        <div class="notice-item-body">Dropping courses may affect your graduation timeline and financial aid
+          eligibility. Please consult with your academic advisor before proceeding.</div>
       </div>
 
-      <% if (typeof dropDeadlinePassed !== 'undefined' && dropDeadlinePassed) { %>
-      <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 16px; border-radius: 12px; margin-bottom: 24px;">
-         <div style="color: #ef4444; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+      <% if (typeof dropDeadlinePassed !=='undefined' && dropDeadlinePassed) { %>
+        <div
+          style="background: #fef2f2; border: 1px solid #fecaca; padding: 16px; border-radius: 12px; margin-bottom: 24px;">
+          <div style="color: #ef4444; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd" />
+            </svg>
             System Locked: Drop Deadline Passed
-         </div>
-         <div style="color: #991b1b; font-size: 14px; margin-top: 4px;">The 2-week drop period has ended. Curriculum changes are no longer permitted and are now enforced by the registrar.</div>
-      </div>
-      <% } %>
-
-      <div style="margin-top: 24px;">
-        <div class="section-title">Current Subjects</div>
-        <% if (student.subjects && student.subjects.length > 0) { %>
-        <% student.subjects.forEach(function(subject) { %>
-        <div class="notice-item" id="subject-<%= subject.code %>">
-          <div class="notice-item-title"><%= subject.name %></div>
-          <div class="notice-item-body">Subject Code: <%= subject.code %> | Units: <%= subject.lecUnits || 3 %></div>
-          <div style="margin-top: 8px;">
-            <% if (typeof dropDeadlinePassed !== 'undefined' && dropDeadlinePassed) { %>
-              <button class="course-btn" style="background: #94a3b8; cursor: not-allowed;" onclick="alert('The subject drop period has ended. No changes are permitted.')">Drop Subject</button>
-            <% } else { %>
-              <button class="course-btn" style="background: #ef4444;" onclick="dropCourse('<%= subject.code %>', '<%= subject.name %>')">Drop Subject</button>
-            <% } %>
           </div>
-        </div>
-        <% }); %>
-        <% } else { %>
-        <div class="notice-item">
-          <div class="notice-item-body">No subjects enrolled this semester.</div>
+          <div style="color: #991b1b; font-size: 14px; margin-top: 4px;">The 2-week drop period has ended. Curriculum
+            changes are no longer permitted and are now enforced by the registrar.</div>
         </div>
         <% } %>
-      </div>
 
-      <!-- Drop Semester Button -->
-      <div style="margin-top: 32px; padding: 24px; background: #fef2f2; border-radius: 12px; opacity: <%= (typeof dropDeadlinePassed !== 'undefined' && dropDeadlinePassed) ? '0.6' : '1' %>;">
-        <div class="notice-item-title">Drop Entire Semester</div>
-        <div class="notice-item-body" style="margin-bottom: 16px;">This will drop all enrolled subjects for this semester. This action cannot be undone.</div>
-        <% if (typeof dropDeadlinePassed !== 'undefined' && dropDeadlinePassed) { %>
-          <button class="course-btn" style="background: #94a3b8; padding: 14px 24px; cursor: not-allowed;" onclick="alert('The subject drop period has ended. No changes are permitted.')">Drop All Subjects</button>
-        <% } else { %>
-          <button class="course-btn" style="background: #dc2626; padding: 14px 24px;" onclick="dropSemester()">Drop All Subjects</button>
-        <% } %>
-      </div>
+          <div style="margin-top: 24px;">
+            <div class="section-title">Current Subjects</div>
+            <% if (student.subjects && student.subjects.length> 0) { %>
+              <% student.subjects.forEach(function(subject) { %>
+                <div class="notice-item" id="subject-<%= subject.code %>">
+                  <div class="notice-item-title">
+                    <%= subject.name %>
+                  </div>
+                  <div class="notice-item-body">Subject Code: <%= subject.code %> | Units: <%= subject.lecUnits || 3 %>
+                  </div>
+                  <div style="margin-top: 8px;">
+                    <% if (typeof dropDeadlinePassed !=='undefined' && dropDeadlinePassed) { %>
+                      <button class="course-btn" style="background: #94a3b8; cursor: not-allowed;"
+                        onclick="alert('The subject drop period has ended. No changes are permitted.')">Drop
+                        Subject</button>
+                      <% } else { %>
+                        <button class="course-btn" style="background: #ef4444;"
+                          onclick="dropCourse('<%= subject.code %>', '<%= subject.name %>')">Drop Subject</button>
+                        <% } %>
+                  </div>
+                </div>
+                <% }); %>
+                  <% } else { %>
+                    <div class="notice-item">
+                      <div class="notice-item-body">No subjects enrolled this semester.</div>
+                    </div>
+                    <% } %>
+          </div>
+
+          <!-- Drop Semester Button -->
+          <div
+            style="margin-top: 32px; padding: 24px; background: #fef2f2; border-radius: 12px; opacity: <%= (typeof dropDeadlinePassed !== 'undefined' && dropDeadlinePassed) ? '0.6' : '1' %>;">
+            <div class="notice-item-title">Drop Entire Semester</div>
+            <div class="notice-item-body" style="margin-bottom: 16px;">This will drop all enrolled subjects for this
+              semester. This action cannot be undone.</div>
+            <% if (typeof dropDeadlinePassed !=='undefined' && dropDeadlinePassed) { %>
+              <button class="course-btn" style="background: #94a3b8; padding: 14px 24px; cursor: not-allowed;"
+                onclick="alert('The subject drop period has ended. No changes are permitted.')">Drop All
+                Subjects</button>
+              <% } else { %>
+                <button class="course-btn" style="background: #dc2626; padding: 14px 24px;"
+                  onclick="dropSemester()">Drop All Subjects</button>
+                <% } %>
+          </div>
     </div>
 
     <div class="right-col">
       <div class="section-title">Drop Policy</div>
       <div class="notice-item">
         <div class="notice-item-title">Drop Deadline</div>
-        <div class="notice-item-body">Courses can be dropped within the first 2 weeks of the semester without academic penalty</div>
+        <div class="notice-item-body">Courses can be dropped within the first 2 weeks of the semester without academic
+          penalty</div>
       </div>
       <div class="notice-item">
         <div class="notice-item-title">Refund Policy</div>
@@ -88,7 +110,8 @@
   </div>
 
   <!-- Confirmation Modal -->
-  <div id="dropModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+  <div id="dropModal"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
     <div style="background: #fff; padding: 32px; border-radius: 16px; max-width: 400px; width: 90%;">
       <div class="section-title">Confirm Drop</div>
       <div id="modalBody" class="notice-item-body" style="margin-bottom: 24px;"></div>
@@ -127,42 +150,42 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ courseCode: currentCourseCode })
         })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            document.getElementById('subject-' + currentCourseCode).style.display = 'none';
-            alert('Subject dropped successfully!');
-          } else {
-            alert('Error: ' + data.message);
-          }
-          closeModal();
-        })
-        .catch(err => {
-          alert('Error dropping subject');
-          closeModal();
-        });
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              document.getElementById('subject-' + currentCourseCode).style.display = 'none';
+              alert('Subject dropped successfully!');
+            } else {
+              alert('Error: ' + data.message);
+            }
+            closeModal();
+          })
+          .catch(err => {
+            alert('Error dropping subject');
+            closeModal();
+          });
       } else if (currentDropType === 'semester') {
         fetch('/drop', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ dropSemester: true })
         })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            alert('All subjects dropped successfully!');
-            location.reload();
-          } else {
-            alert('Error: ' + data.message);
-          }
-          closeModal();
-        })
-        .catch(err => {
-          alert('Error dropping subjects');
-          closeModal();
-        });
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              alert('All subjects dropped successfully!');
+              location.reload();
+            } else {
+              alert('Error: ' + data.message);
+            }
+            closeModal();
+          })
+          .catch(err => {
+            alert('Error dropping subjects');
+            closeModal();
+          });
       }
     }
   </script>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>

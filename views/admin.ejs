@@ -125,6 +125,7 @@
     
     <nav>
       <a href="/admin/students" class="nav-link active">🎓 Student Roster</a>
+      <a href="/admin/announcements" class="nav-link">📢 Announcements</a>
       <a href="/admin/campus" class="nav-link">🏛️ Campus Records</a>
       <a href="/admin/settings" class="nav-link">⚙️ System Configuration</a>
     </nav>
@@ -175,6 +176,8 @@
                 data-name="<%= student.name.replace(/"/g, '&quot;') %>"
                 data-snum="<%= student.studentNumber %>"
                 data-course="<%= (student.course || '').replace(/"/g, '&quot;') %>"
+                data-email="<%= (student.email || '').replace(/"/g, '&quot;') %>"
+                data-year="<%= student.year || 1 %>"
                 data-subjects='<%- JSON.stringify(student.subjects || []) %>'
                 onclick="handleManageClick(this)">Manage Record</button></td>
             </tr>
@@ -236,26 +239,24 @@
         <div class="action-card" onclick="openSubModal('subjectsFormModal')">
           <div class="ac-icon">📚</div>
           <div class="ac-title">Edit Subjects</div>
-          <div class="ac-desc">Assign specific curricular subjects and calculate total term units.</div>
+          <div class="ac-desc">Assign curricular subjects and update total term units.</div>
         </div>
-        <div class="action-card" onclick="openGradesModal()">
-          <div class="ac-icon">📊</div>
-          <div class="ac-title">View Grades</div>
-          <div class="ac-desc">Access academic records, term evaluations, and transcript history.</div>
+        <div class="action-card" onclick="openSubModal('gradeEntryModal')">
+          <div class="ac-icon">📝</div>
+          <div class="ac-title">Enter Grades</div>
+          <div class="ac-desc">Submit midterm, finals, and final grade for each subject.</div>
         </div>
-        <div class="action-card" onclick="openAttendanceModal()">
-          <div class="ac-icon">📅</div>
-          <div class="ac-title">Attendance Log</div>
-          <div class="ac-desc">Monitor daily gate logs and specific class presence records.</div>
+        <div class="action-card" onclick="openSubModal('editStudentModal')">
+          <div class="ac-icon">✏️</div>
+          <div class="ac-title">Edit Student Info</div>
+          <div class="ac-desc">Update student name, course, year level, and email.</div>
         </div>
-        
-        <!-- Purge Form integrated nicely -->
         <form id="purgeForm" action="/admin/purge" method="POST" style="margin:0; padding:0; display:block;">
           <input type="hidden" name="studentId" id="purgeIdInput">
-          <div class="action-card danger" onclick="if(confirm('Are you absolutely sure? This will permanently delete the student from the database.')) { document.getElementById('purgeForm').submit(); }">
+          <div class="action-card danger" onclick="if(confirm('Are you absolutely sure? This will permanently delete the student and all their grades.')) { document.getElementById('purgeForm').submit(); }">
             <div class="ac-icon">⚠️</div>
             <div class="ac-title">Purge Account</div>
-            <div class="ac-desc">Permanently destroy this user account and all affiliated internal data.</div>
+            <div class="ac-desc">Permanently delete this student account and all affiliated data.</div>
           </div>
         </form>
       </div>
@@ -305,7 +306,7 @@
     </div>
   </div>
 
-  <!-- Edit Subjects Sub-Modal (Form) -->
+  <!-- Edit Subjects Sub-Modal -->
   <div id="subjectsFormModal" class="modal-overlay" style="z-index: 105;" onclick="openModal('manageModal')">
     <div class="modal-box" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="openModal('manageModal')">&times;</button>
@@ -313,7 +314,6 @@
       <p style="color:#64748b; font-size:14px; font-weight:600; margin-bottom:20px;">
         Assign subjects to <span id="subjName" style="color:#0f172a;"></span>.
       </p>
-      
       <form action="/admin/subjects" method="POST">
         <input type="hidden" name="studentId" id="subjIdInput">
         <div class="form-group">
@@ -325,10 +325,80 @@
     </div>
   </div>
 
+  <!-- Grade Entry Modal -->
+  <div id="gradeEntryModal" class="modal-overlay" style="z-index: 105;" onclick="openModal('manageModal')">
+    <div class="modal-box large" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="openModal('manageModal')">&times;</button>
+      <div class="modal-title">Enter Grades</div>
+      <p style="color:#64748b; font-size:14px; font-weight:600; margin-bottom:20px;">
+        Enter grades for <span id="gradeStudentName" style="color:#0f172a;"></span>.
+      </p>
+      <form action="/admin/grades" method="POST">
+        <input type="hidden" name="studentId" id="gradeStudentIdInput">
+        <div class="form-group">
+          <label class="form-label">Select Subject</label>
+          <select name="subjectCode" id="gradeSubjectSelect" class="form-input" onchange="updateSubjectName(this)" required>
+            <option value="">— Choose a subject —</option>
+          </select>
+          <input type="hidden" name="subjectName" id="gradeSubjectNameInput">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+          <div class="form-group">
+            <label class="form-label">Midterm Grade</label>
+            <input type="text" name="midterm" id="gradeMidterm" class="form-input" placeholder="e.g. 1.5" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Finals Grade</label>
+            <input type="text" name="finals" id="gradeFinals" class="form-input" placeholder="e.g. 1.75" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Final Grade</label>
+            <input type="text" name="finalGrade" id="gradeFinal" class="form-input" placeholder="e.g. 1.75" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">Save Grades</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Student Info Modal -->
+  <div id="editStudentModal" class="modal-overlay" style="z-index: 105;" onclick="openModal('manageModal')">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="openModal('manageModal')">&times;</button>
+      <div class="modal-title">Edit Student Information</div>
+      <form action="/admin/edit" method="POST">
+        <input type="hidden" name="studentId" id="editStudentIdInput">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" name="name" id="editName" class="form-input" placeholder="e.g. DOE, John" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" id="editEmail" class="form-input" placeholder="e.g. john@chcc.edu.ph" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Program / Course</label>
+          <input type="text" name="course" id="editCourse" class="form-input" placeholder="e.g. Bachelor of Science in Computer Science" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Year Level</label>
+          <select name="year" id="editYear" class="form-input">
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%; margin-top:8px;">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
   <script>
     let activeStudentId = null;
     let activeStudentName = '';
     let activeStudentSubjects = [];
+    let activeStudentData = {};
 
     function openModal(id) {
       document.querySelectorAll('.modal-overlay').forEach(el => el.style.display = 'none');
@@ -344,12 +414,15 @@
       const name = btn.dataset.name;
       const sNum = btn.dataset.snum;
       const course = btn.dataset.course;
+      const email = btn.dataset.email || '';
+      const year  = btn.dataset.year  || '1';
       let subjects = [];
       try { subjects = JSON.parse(btn.dataset.subjects); } catch(e) {}
-      openManageModal(id, name, sNum, course, subjects);
+      activeStudentData = { id, name, email, course, year, subjects };
+      openManageModal(id, name, sNum, course, subjects, email, year);
     }
 
-    function openManageModal(id, name, sNum, course, subjects) {
+    function openManageModal(id, name, sNum, course, subjects, email, year) {
       activeStudentId = id;
       activeStudentName = name;
       activeStudentSubjects = subjects || [];
@@ -357,45 +430,50 @@
       document.getElementById('mmAvatar').innerText = name.charAt(0).toUpperCase();
       document.getElementById('mmName').innerText = name;
       document.getElementById('mmMeta').innerText = `${sNum} — ${course || 'Unassigned'}`;
-      
       document.getElementById('purgeIdInput').value = id;
       openModal('manageModal');
     }
     
-    function openGradesModal() {
-      document.getElementById('gradesStudentName').innerText = activeStudentName;
-      const subjects = activeStudentSubjects;
-      const tbody = document.getElementById('gradesTableBody');
-      tbody.innerHTML = subjects.length === 0
-        ? '<tr><td colspan="4" style="padding:16px; color:#94a3b8; text-align:center;">No subjects enrolled.</td></tr>'
-        : subjects.map(s => `<tr style="border-bottom:1px solid #f1f5f9;">
-            <td style="padding:12px 16px; font-weight:700;">${s.code} - ${s.name}</td>
-            <td style="padding:12px 16px; color:#64748b;">--</td>
-            <td style="padding:12px 16px; color:#64748b;">--</td>
-            <td style="padding:12px 16px; font-weight:800; color:#0284c7;">Pending</td>
-          </tr>`).join('');
-      openModal('gradesModal');
-    }
-
-    function openAttendanceModal() {
-      document.getElementById('attendStudentName').innerText = activeStudentName;
-      const subjects = activeStudentSubjects;
-      const tbody = document.getElementById('attendTableBody');
-      tbody.innerHTML = subjects.length === 0
-        ? '<tr><td colspan="4" style="padding:16px; color:#94a3b8; text-align:center;">No subjects enrolled.</td></tr>'
-        : subjects.map(s => `<tr style="border-bottom:1px solid #f1f5f9;">
-            <td style="padding:12px 16px; font-weight:700;">${s.code}</td>
-            <td style="padding:12px 16px; color:#16a34a; font-weight:700;">--</td>
-            <td style="padding:12px 16px; color:#ef4444; font-weight:700;">--</td>
-            <td style="padding:12px 16px; font-weight:800; color:#0284c7;">Pending</td>
-          </tr>`).join('');
-      openModal('attendanceModal');
-    }
-
     function openSubModal(id) {
-      document.getElementById('subjIdInput').value = activeStudentId;
-      document.getElementById('subjName').innerText = activeStudentName;
+      // subjects form
+      if (document.getElementById('subjIdInput')) {
+        document.getElementById('subjIdInput').value = activeStudentId;
+        document.getElementById('subjName').innerText = activeStudentName;
+      }
+      // grade entry form
+      if (id === 'gradeEntryModal') {
+        document.getElementById('gradeStudentIdInput').value = activeStudentId;
+        document.getElementById('gradeStudentName').innerText = activeStudentName;
+        // Populate subject dropdown
+        const sel = document.getElementById('gradeSubjectSelect');
+        sel.innerHTML = '<option value="">— Choose a subject —</option>';
+        activeStudentSubjects.forEach(function(s) {
+          const opt = document.createElement('option');
+          opt.value = s.code;
+          opt.dataset.name = s.name;
+          opt.textContent = s.code + ' — ' + s.name;
+          sel.appendChild(opt);
+        });
+        if (activeStudentSubjects.length === 0) {
+          sel.innerHTML = '<option value="">No subjects assigned yet</option>';
+        }
+        document.getElementById('gradeSubjectNameInput').value = '';
+      }
+      // edit student form
+      if (id === 'editStudentModal') {
+        document.getElementById('editStudentIdInput').value = activeStudentData.id;
+        document.getElementById('editName').value  = activeStudentData.name || '';
+        document.getElementById('editEmail').value = activeStudentData.email || '';
+        document.getElementById('editCourse').value = activeStudentData.course || '';
+        const yr = document.getElementById('editYear');
+        yr.value = activeStudentData.year || '1';
+      }
       openModal(id);
+    }
+
+    function updateSubjectName(sel) {
+      const opt = sel.options[sel.selectedIndex];
+      document.getElementById('gradeSubjectNameInput').value = opt.dataset.name || '';
     }
   </script>
 </body>

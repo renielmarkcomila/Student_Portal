@@ -4,3 +4,6 @@ package-lock.json
 *.log
 .DS_Store
 .env
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal

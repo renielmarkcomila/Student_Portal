@@ -4,7 +4,7 @@ const path = require('path');
 const ejs = require('ejs');
 const { initializeDB } = require('./database.js');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 let db;
 
 function getCookies(req) {
